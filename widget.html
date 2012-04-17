@@ -1,6 +1,6 @@
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
 
   <body>
@@ -16,9 +16,17 @@
             "width" : width,
             "height": height
           });
-          $(".tab-link").css({
-            "width" : width - 63
-          });
+
+          console.log(document.documentElement.scrollHeight, document.documentElement.clientHeight)
+          if ( document.documentElement.scrollHeight === document.documentElement.clientHeight ) {
+            $(".tab-link").css({
+              "width" : width - 60
+            });
+          } else {
+            $(".tab-link").css({
+              "width" : width - 100
+            });
+          }
         }
 
         // Handles when the widget is resized
