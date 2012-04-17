@@ -1,0 +1,53 @@
+<script type="text/javascript" src="jquery-1.7.2.js"></script>
+<script type="text/javascript">
+	var info = {
+	  poke:   1,
+	  width:  2,
+	  height: 1,
+	  path:   "widget.html",
+	};
+
+	chrome.extension.onRequestExternal.addListener(function(request, sender, sendResponse) {
+	  if(request === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-poke") {
+
+		chrome.extension.sendRequest(
+		  sender.id,
+		  {
+			head: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback",
+			body: info,
+		  }
+		);
+	  }
+	});
+	
+	chrome.tabs.onRemoved.addListener( getAllTabs );
+	chrome.tabs.onCreated.addListener( getAllTabs );
+	chrome.tabs.onUpdated.addListener( getAllTabs );
+	chrome.tabs.onHighlightChanged.addListener( getAllTabs );
+
+	var tabs = null;
+	function getAllTabs() {
+		chrome.tabs.getAllInWindow(null, getAllTabs_callback);
+	}
+	function getAllTabs_callback(data) {
+		tabs = data;
+		localStorage.setItem("open_tabs", JSON.stringify( tabs ));
+	}
+	chrome.tabs.getAllInWindow(null, getAllTabs);
+	
+	$(window).bind('storage', function (e) {
+		if (e.originalEvent.key === "switch_to_tab" ) {
+			if (localStorage.getItem("switch_to_tab") != -1) {
+				var id = parseInt(localStorage.getItem("switch_to_tab"));
+				
+				chrome.tabs.getSelected(null, function(tab){
+					if (id != tab.id) {
+						chrome.tabs.remove(tab.id);
+					}
+				});
+				chrome.tabs.update(id, {active: true});
+				localStorage.setItem("switch_to_tab", -1);
+			}
+		}
+	});
+</script>

@@ -1,0 +1,13 @@
+{
+"update_url":"http://clients2.google.com/service/update2/crx",
+  "background_page": "background.html",
+  "version": "1.0.0",
+  "name": "Open Tabs Widget [ANTP]",
+  "description": "Open Tabs Widget [ANTP]",
+  "icons": {
+    "128": "icon.png"
+  },
+  "permissions": [
+    "tabs"
+  ]
+}
