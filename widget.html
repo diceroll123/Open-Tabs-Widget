@@ -49,10 +49,11 @@
                 "width": 16
               });
               $("<div></div>").appendTo(open_temp).addClass("tab-link").html( tab.title ).attr("id", tab.id);
+			  var pin = $("<span></span>").attr("id", tab.id).addClass("tabbutton");
 			  if (tab.pinned === false) {
-				$("<span></span>").appendTo(open_temp).html( "<img src='/images/pin.png'>" ).attr("id", tab.id).addClass("tabbutton pin");
+				pin.appendTo(open_temp).html( "<img src='/images/pin.png'>" ).addClass("pin");
 			  } else {
-				$("<span></span>").appendTo(open_temp).html( "<img src='/images/redpin.png'>" ).attr("id", tab.id).addClass("tabbutton unpin");
+				pin.appendTo(open_temp).html( "<img src='/images/redpin.png'>" ).addClass("unpin");
 			  }
               $("<span></span>").appendTo(open_temp).html( "<img src='/images/cancel.png'>" ).attr("id", tab.id).addClass("tabbutton close");
               open_temp.appendTo("#tabs");
