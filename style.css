@@ -76,7 +76,7 @@
     min-height: 100px;
   }
   ::-webkit-scrollbar-track-piece {
-    background-color: #EEEEEE;
+    background-color: #fff;
   }
   ::-webkit-scrollbar-corner {
     background: transparent;
