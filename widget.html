@@ -17,7 +17,7 @@
             "height": height
           });
           $(".tab-link").css({
-            "width" : width - 40
+            "width" : width - 63
           });
         }
 
@@ -38,7 +38,7 @@
 
         function createList() {
           var open_tabs = JSON.parse(localStorage.getItem("open_tabs"));
-          $("#stuff").html("");
+          $("#tabs").html("");
           $.each(open_tabs, function(id, tab) {
             if ( tab.incognito === false && tab.status == "complete" ) {
               var open_temp = $("<div></div>").addClass("tab-item");
@@ -49,7 +49,13 @@
                 "width": 16
               });
               $("<div></div>").appendTo(open_temp).addClass("tab-link").html( tab.title ).attr("id", tab.id);
-              open_temp.appendTo("#stuff");
+			  if (tab.pinned === false) {
+				$("<span></span>").appendTo(open_temp).html( "<img src='/images/pin.png'>" ).attr("id", tab.id).addClass("tabbutton pin");
+			  } else {
+				$("<span></span>").appendTo(open_temp).html( "<img src='/images/redpin.png'>" ).attr("id", tab.id).addClass("tabbutton unpin");
+			  }
+              $("<span></span>").appendTo(open_temp).html( "<img src='/images/cancel.png'>" ).attr("id", tab.id).addClass("tabbutton close");
+              open_temp.appendTo("#tabs");
             }
           });
 
@@ -59,9 +65,21 @@
         $(".tab-link").live("click", function () {
           localStorage.setItem("switch_to_tab", $(this).attr("id"));
         });
+
+        $(".close").live("click", function () {
+          localStorage.setItem("close_tab", $(this).attr("id"));
+        });
+
+        $(".pin").live("click", function () {
+          localStorage.setItem("pin_tab", $(this).attr("id"));
+        });
+
+        $(".unpin").live("click", function () {
+          localStorage.setItem("unpin_tab", $(this).attr("id"));
+        });
       });
     </script>
 
-    <div id="stuff"></div>
+    <div id="tabs"></div>
   </body>
 </html>
