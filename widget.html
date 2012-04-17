@@ -1,53 +1,67 @@
 <html>
   <head>
-    <link href="styles.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
 
   <body>
-		<script type="text/javascript" src="jquery-1.7.2.js"></script>
-		<script type="text/javascript">
-			$(document).ready(function($) {
-			
-				$('#stuff').bind('mousewheel', function(e, d) {
-					var height = $('#stuff').height(), scrollHeight = $('#stuff').get(0).scrollHeight;
-					if((this.scrollTop === (scrollHeight - height) && d < 0) || (this.scrollTop === 0 && d > 0)) {
-						e.preventDefault();
-					}
-				});
+    <script type="text/javascript" src="jquery-1.7.2.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function($) {
 
-				$(window).bind('storage', function (e) {
-					if ( typeof(e.originalEvent) === "object"
-					&& typeof(e.originalEvent.key) === "string"
-					&& e.originalEvent.key === "open_tabs" ) {
-						createList();
-					}
-				});
-				createList();
-				
-				function createList() {
-					var open_tabs = JSON.parse(localStorage.getItem("open_tabs"));
-					$("#stuff").html("");
-					$.each(open_tabs, function(id, tab) {
-						if ( tab.incognito === false && tab.status == "complete" ) {
-							var open_temp = $("<div></div>").addClass("tab-item");
-							$("<img></img>").appendTo(open_temp).addClass("tab-icon")
-							.attr({
-								"src": tab.favIconUrl,
-								"height": 16,
-								"width": 16
-							});
-							$("<div></div>").appendTo(open_temp).addClass("tab-link").html( tab.title ).attr("id", tab.id);
-							open_temp.appendTo("#stuff");
-						}
-					});
-				}
-				
-				$(".tab-link").live("click", function () {
-					localStorage.setItem("switch_to_tab", $(this).attr("id"));
-				});
-			});
-		</script>
-		
-		<div id="stuff"></div>
+        function restyle() {
+          var width  = $(window).width() ,
+              height = $(window).height();
+
+          $("body").css({
+            "width" : width,
+            "height": height
+          });
+          $(".tab-link").css({
+            "width" : width - 40
+          });
+        }
+
+        // Handles when the widget is resized
+        restyle();
+        $(window).bind("resize", function() {
+          restyle();
+        });
+
+        $(window).bind('storage', function (e) {
+          if ( typeof(e.originalEvent) === "object"
+          && typeof(e.originalEvent.key) === "string"
+          && e.originalEvent.key === "open_tabs" ) {
+            createList();
+          }
+        });
+        createList();
+
+        function createList() {
+          var open_tabs = JSON.parse(localStorage.getItem("open_tabs"));
+          $("#stuff").html("");
+          $.each(open_tabs, function(id, tab) {
+            if ( tab.incognito === false && tab.status == "complete" ) {
+              var open_temp = $("<div></div>").addClass("tab-item");
+              $("<img></img>").appendTo(open_temp).addClass("tab-icon")
+              .attr({
+                "src": tab.favIconUrl,
+                "height": 16,
+                "width": 16
+              });
+              $("<div></div>").appendTo(open_temp).addClass("tab-link").html( tab.title ).attr("id", tab.id);
+              open_temp.appendTo("#stuff");
+            }
+          });
+
+          restyle();
+        }
+
+        $(".tab-link").live("click", function () {
+          localStorage.setItem("switch_to_tab", $(this).attr("id"));
+        });
+      });
+    </script>
+
+    <div id="stuff"></div>
   </body>
 </html>
