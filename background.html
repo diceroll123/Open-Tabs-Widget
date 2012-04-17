@@ -56,29 +56,5 @@
         localStorage.setItem("switch_to_tab", -1);
       }
     }
-	
-	if (e.originalEvent.key === "close_tab" ) {
-      var id = parseInt(localStorage.getItem("close_tab"));
-	  if (localStorage.getItem("close_tab") != -1) {
-        chrome.tabs.remove(id);
-        localStorage.setItem("close_tab", -1);
-	  }
-    }
-	
-	if (e.originalEvent.key === "pin_tab" ) {
-      var id = parseInt(localStorage.getItem("pin_tab"));
-	  if (localStorage.getItem("pin_tab") != -1) {
-        chrome.tabs.update(id, {pinned: true});
-        localStorage.setItem("pin_tab", -1);
-	  }
-    }
-	
-	if (e.originalEvent.key === "unpin_tab" ) {
-      var id = parseInt(localStorage.getItem("unpin_tab"));
-	  if (localStorage.getItem("unpin_tab") != -1) {
-        chrome.tabs.update(id, {pinned: false});
-        localStorage.setItem("unpin_tab", -1);
-	  }
-    }
   });
 </script>

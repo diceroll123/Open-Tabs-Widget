@@ -8,14 +8,11 @@
     font-size: 14px;
   }
 
-  #tabs {
+  #stuff {
     width: 100%;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-	float:left;
-	display:inline-block;
-	clear:both;
   }
 
   .tab-item {
@@ -44,11 +41,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     cursor: pointer;
-  }
-  
-  .tabbutton {
-	cursor: pointer;
-	padding-right: 2px;
   }
 
   ::-webkit-scrollbar {
