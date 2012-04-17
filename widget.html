@@ -17,16 +17,10 @@
             "height": height
           });
 
-          console.log(document.documentElement.scrollHeight, document.documentElement.clientHeight)
-          if ( document.documentElement.scrollHeight === document.documentElement.clientHeight ) {
-            $(".tab-link").css({
-              "width" : width - 60
-            });
-          } else {
-            $(".tab-link").css({
-              "width" : width - 100
-            });
-          }
+          $(".tab-link").css({
+            "width" : width - 75
+          });
+
         }
 
         // Handles when the widget is resized
@@ -59,11 +53,11 @@
               $("<div></div>").appendTo(open_temp).addClass("tab-link").html( tab.title ).attr("id", tab.id);
 			  var pin = $("<span></span>").attr("id", tab.id).addClass("tabbutton");
 			  if (tab.pinned === false) {
-				pin.appendTo(open_temp).html( "<img src='/images/pin.png'>" ).addClass("pin");
+				pin.appendTo(open_temp).html( "<img src='/images/pin.png' title='Pin'>" ).addClass("pin button");
 			  } else {
-				pin.appendTo(open_temp).html( "<img src='/images/redpin.png'>" ).addClass("unpin");
+				pin.appendTo(open_temp).html( "<img src='/images/unpin.png' title='Unpin'>" ).addClass("unpin button");
 			  }
-              $("<span></span>").appendTo(open_temp).html( "<img src='/images/cancel.png'>" ).attr("id", tab.id).addClass("tabbutton close");
+              $("<span></span>").appendTo(open_temp).html( "<img src='/images/close.png' title='Close'>" ).attr("id", tab.id).addClass("tabbutton close button");
               open_temp.appendTo("#tabs");
             }
           });
