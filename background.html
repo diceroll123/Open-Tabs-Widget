@@ -43,7 +43,7 @@
   chrome.tabs.getAllInWindow(null, getAllTabs);
 
   $(window).bind('storage', function (e) {
-    if (e.originalEvent.key === "switch_to_tab" ) {
+    if ( e.originalEvent.key === "switch_to_tab" ) {
       if (localStorage.getItem("switch_to_tab") != -1) {
         var id = parseInt(localStorage.getItem("switch_to_tab"));
 
@@ -56,29 +56,34 @@
         localStorage.setItem("switch_to_tab", -1);
       }
     }
-	
-	if (e.originalEvent.key === "close_tab" ) {
+
+    if ( e.originalEvent.key === "close_tab" ) {
       var id = parseInt(localStorage.getItem("close_tab"));
-	  if (localStorage.getItem("close_tab") != -1) {
-        chrome.tabs.remove(id);
-        localStorage.setItem("close_tab", -1);
-	  }
+      if (localStorage.getItem("close_tab") !== "-1") {
+          chrome.tabs.remove(id);
+          localStorage.setItem("close_tab", "-1");
+      }
     }
-	
-	if (e.originalEvent.key === "pin_tab" ) {
-      var id = parseInt(localStorage.getItem("pin_tab"));
-	  if (localStorage.getItem("pin_tab") != -1) {
+
+    if ( e.originalEvent.key === "pin_toggle" ) {
+      var id  = parseInt(localStorage.getItem("pin_toggle"));
+      if ( typeof(id) === "null" ) {
+        return false;
+      }
+
+      var tab = tabs.filter(function (tab) { return tab.id === id; })[0];
+      if ( typeof(tab) === "undefined" ) {
+        console.error("Tab wasn't found");
+        return false;
+      }
+
+      if ( tab.pinned === true ) {
+        chrome.tabs.update(id, { pinned: false });
+      } else {
         chrome.tabs.update(id, {pinned: true});
-        localStorage.setItem("pin_tab", -1);
-	  }
-    }
-	
-	if (e.originalEvent.key === "unpin_tab" ) {
-      var id = parseInt(localStorage.getItem("unpin_tab"));
-	  if (localStorage.getItem("unpin_tab") != -1) {
-        chrome.tabs.update(id, {pinned: false});
-        localStorage.setItem("unpin_tab", -1);
-	  }
+      }
+
+      localStorage.setItem("pin_toggle", "null");
     }
   });
 </script>
