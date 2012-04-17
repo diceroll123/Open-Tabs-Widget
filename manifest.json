@@ -8,6 +8,7 @@
     "128": "icon.png"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "chrome://favicon/"
   ]
 }
