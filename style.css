@@ -11,8 +11,15 @@
   #tabs {
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
+  }
+
+  .button {
+    opacity: .4;
+  }
+  .button:hover {
+    opacity: .7;
   }
 
   .tab-item {
@@ -27,7 +34,7 @@
     background-color: #EEEEEE;
   }
   .tab-item:hover {
-    background-color: #C7C6BF;
+    background-color: #DDDDDD;
   }
   .tab-icon, .tab-link {
     display: inline-block;
@@ -42,7 +49,7 @@
     text-overflow: ellipsis;
     cursor: pointer;
   }
-  
+
   .tabbutton {
 	cursor: pointer;
 	padding-right: 2px;
