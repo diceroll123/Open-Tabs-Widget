@@ -1,53 +1,84 @@
 <script type="text/javascript" src="jquery-1.7.2.js"></script>
 <script type="text/javascript">
-	var info = {
-	  poke:   1,
-	  width:  2,
-	  height: 1,
-	  path:   "widget.html",
-	};
+  var info = {
+    "poke"    :   2,              // poke version 2
+    "width"   :   2,              // 406 px default
+    "height"  :   1,              // 200 px default
+    "path"    :   "widget.html",
+    "v2"      :   {
+                    "resize"    :   true,   // Set to true ONLY if you create a range below.
+                    "min_width" :   1,      // Required; set to default width if not resizable
+                    "max_width" :   3,      // Required; set to default width if not resizable
+                    "min_height":   1,      // Required; set to default height if not resizable
+                    "max_height":   3       // Required; set to default height if not resizable
+                  }
+  };
 
-	chrome.extension.onRequestExternal.addListener(function(request, sender, sendResponse) {
-	  if(request === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-poke") {
+  chrome.extension.onRequestExternal.addListener(function(request, sender, sendResponse) {
+    if(request === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-poke") {
 
-		chrome.extension.sendRequest(
-		  sender.id,
-		  {
-			head: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback",
-			body: info,
-		  }
-		);
+    chrome.extension.sendRequest(
+      sender.id,
+      {
+      head: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback",
+      body: info,
+      }
+    );
+    }
+  });
+
+  chrome.tabs.onCreated.addListener( getAllTabs );
+  chrome.tabs.onHighlighted.addListener( getAllTabs );
+  chrome.tabs.onUpdated.addListener( getAllTabs );
+  chrome.tabs.onRemoved.addListener( getAllTabs );
+
+  var tabs = null;
+  function getAllTabs() {
+    chrome.tabs.getAllInWindow(null, getAllTabs_callback);
+  }
+  function getAllTabs_callback(data) {
+    tabs = data;
+    localStorage.setItem("open_tabs", JSON.stringify( tabs ));
+  }
+  chrome.tabs.getAllInWindow(null, getAllTabs);
+
+  $(window).bind('storage', function (e) {
+    if (e.originalEvent.key === "switch_to_tab" ) {
+      if (localStorage.getItem("switch_to_tab") != -1) {
+        var id = parseInt(localStorage.getItem("switch_to_tab"));
+
+        chrome.tabs.getSelected(null, function(tab){
+          if (id != tab.id) {
+            chrome.tabs.remove(tab.id);
+          }
+        });
+        chrome.tabs.update(id, {active: true});
+        localStorage.setItem("switch_to_tab", -1);
+      }
+    }
+	
+	if (e.originalEvent.key === "close_tab" ) {
+      var id = parseInt(localStorage.getItem("close_tab"));
+	  if (localStorage.getItem("close_tab") != -1) {
+        chrome.tabs.remove(id);
+        localStorage.setItem("close_tab", -1);
 	  }
-	});
+    }
 	
-	chrome.tabs.onRemoved.addListener( getAllTabs );
-	chrome.tabs.onCreated.addListener( getAllTabs );
-	chrome.tabs.onUpdated.addListener( getAllTabs );
-	chrome.tabs.onHighlightChanged.addListener( getAllTabs );
-
-	var tabs = null;
-	function getAllTabs() {
-		chrome.tabs.getAllInWindow(null, getAllTabs_callback);
-	}
-	function getAllTabs_callback(data) {
-		tabs = data;
-		localStorage.setItem("open_tabs", JSON.stringify( tabs ));
-	}
-	chrome.tabs.getAllInWindow(null, getAllTabs);
+	if (e.originalEvent.key === "pin_tab" ) {
+      var id = parseInt(localStorage.getItem("pin_tab"));
+	  if (localStorage.getItem("pin_tab") != -1) {
+        chrome.tabs.update(id, {pinned: true});
+        localStorage.setItem("pin_tab", -1);
+	  }
+    }
 	
-	$(window).bind('storage', function (e) {
-		if (e.originalEvent.key === "switch_to_tab" ) {
-			if (localStorage.getItem("switch_to_tab") != -1) {
-				var id = parseInt(localStorage.getItem("switch_to_tab"));
-				
-				chrome.tabs.getSelected(null, function(tab){
-					if (id != tab.id) {
-						chrome.tabs.remove(tab.id);
-					}
-				});
-				chrome.tabs.update(id, {active: true});
-				localStorage.setItem("switch_to_tab", -1);
-			}
-		}
-	});
+	if (e.originalEvent.key === "unpin_tab" ) {
+      var id = parseInt(localStorage.getItem("unpin_tab"));
+	  if (localStorage.getItem("unpin_tab") != -1) {
+        chrome.tabs.update(id, {pinned: false});
+        localStorage.setItem("unpin_tab", -1);
+	  }
+    }
+  });
 </script>
