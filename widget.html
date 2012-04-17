@@ -8,13 +8,6 @@
     <script type="text/javascript">
       $(document).ready(function($) {
 
-        $('#stuff').bind('mousewheel', function(e, d) {
-          var height = $('#stuff').height(), scrollHeight = $('#stuff').get(0).scrollHeight;
-          if((this.scrollTop === (scrollHeight - height) && d < 0) || (this.scrollTop === 0 && d > 0)) {
-            e.preventDefault();
-          }
-        });
-
         $(window).bind('storage', function (e) {
           if ( typeof(e.originalEvent) === "object"
           && typeof(e.originalEvent.key) === "string"
