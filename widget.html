@@ -8,6 +8,25 @@
     <script type="text/javascript">
       $(document).ready(function($) {
 
+        function restyle() {
+          var width  = $(window).width() ,
+              height = $(window).height();
+
+          $("body").css({
+            "width" : width,
+            "height": height
+          });
+          $(".tab-link").css({
+            "width" : width - 40
+          });
+        }
+
+        // Handles when the widget is resized
+        restyle();
+        $(window).bind("resize", function() {
+          restyle();
+        });
+
         $(window).bind('storage', function (e) {
           if ( typeof(e.originalEvent) === "object"
           && typeof(e.originalEvent.key) === "string"
@@ -33,6 +52,8 @@
               open_temp.appendTo("#stuff");
             }
           });
+
+          restyle();
         }
 
         $(".tab-link").live("click", function () {
