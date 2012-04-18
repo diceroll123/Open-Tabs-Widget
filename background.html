@@ -77,11 +77,8 @@
         return false;
       }
 
-      if ( tab.pinned === true ) {
-        chrome.tabs.update(id, { pinned: false });
-      } else {
-        chrome.tabs.update(id, {pinned: true});
-      }
+      // Invert pin state
+      chrome.tabs.update(id, { pinned: !tab.pinned });
 
       localStorage.setItem("pin_toggle", "null");
     }
