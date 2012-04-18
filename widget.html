@@ -77,6 +77,8 @@
           localStorage.setItem("pin_toggle", $(this).attr("id"));
         });
       });
+
+      $('img').live('dragstart', function(event) { event.preventDefault(); });
     </script>
 
     <div id="tabs"></div>
