@@ -73,14 +73,12 @@
           localStorage.setItem("close_tab", $(this).attr("id"));
         });
 
-        $(".pin").live("click", function () {
-          localStorage.setItem("pin_tab", $(this).attr("id"));
-        });
-
-        $(".unpin").live("click", function () {
-          localStorage.setItem("unpin_tab", $(this).attr("id"));
+        $(".pin,.unpin").live("click", function () {
+          localStorage.setItem("pin_toggle", $(this).attr("id"));
         });
       });
+
+      $('img').live('dragstart', function(event) { event.preventDefault(); });
     </script>
 
     <div id="tabs"></div>
