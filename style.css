@@ -36,6 +36,8 @@
   .button {
     opacity: .2;
     -webkit-transition: opacity .2s ease-in-out;
+	cursor: pointer;
+	padding-right: 2px;
   }
   .unpin {
     opacity: .4;
@@ -70,11 +72,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     cursor: pointer;
-  }
-
-  .tabbutton {
-	cursor: pointer;
-	padding-right: 2px;
   }
 
   ::-webkit-scrollbar {

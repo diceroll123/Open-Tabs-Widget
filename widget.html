@@ -1,7 +1,8 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <script type="text/javascript" src="jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="/js/qs_score.js"></script>
     <script type="text/javascript">
       $(document).ready(function($) {
 
@@ -29,38 +30,9 @@
           if ( typeof(e.originalEvent) === "object"
           && typeof(e.originalEvent.key) === "string"
           && e.originalEvent.key === "open_tabs" ) {
-            createList();
+            searchTabs();
           }
         });
-        createList();
-
-        function createList() {
-          var open_tabs = JSON.parse(localStorage.getItem("open_tabs"));
-          $("#tabs").html("");
-          $.each(open_tabs, function(id, tab) {
-            if ( tab.incognito === false && tab.status == "complete" ) {
-              var open_temp = $("<div></div>").addClass("tab-item");
-              $("<img></img>").appendTo(open_temp).addClass("tab-icon")
-              .attr({
-                "src": tab.favIconUrl,
-                "height": 16,
-                "width": 16
-              });
-              $("<div></div>").appendTo(open_temp).addClass("tab-link").html( tab.title ).attr("id", tab.id);
-              var pin = $("<span></span>").attr("id", tab.id).addClass("tabbutton");
-              if (tab.pinned === false) {
-                pin.appendTo(open_temp).html( "<img src='/images/pin.png' title='Pin'>" ).addClass("pin button");
-              } else {
-                pin.appendTo(open_temp).html( "<img src='/images/unpin.png' title='Unpin'>" ).addClass("unpin button");
-              }
-              $("<span></span>").appendTo(open_temp).html( "<img src='/images/close.png' title='Close'>" )
-                .attr("id", tab.id).addClass("tabbutton close button");
-              open_temp.appendTo("#tabs");
-            }
-          });
-
-          restyle();
-        }
 
         $(".tab-link").live("click", function () {
           localStorage.setItem("switch_to_tab", $(this).attr("id"));
@@ -73,15 +45,63 @@
         $(".pin,.unpin").live("click", function () {
           localStorage.setItem("pin_toggle", $(this).attr("id"));
         });
-      });
 
-      $('img').live('dragstart', function(event) { event.preventDefault(); });
+        $('img').live('dragstart', function(event) { event.preventDefault(); });
+
+        $("input#query").live("keyup", searchTabs);
+
+        function searchTabs() {
+          var query = $("input#query").val();
+          var open_tabs = JSON.parse(localStorage.getItem("open_tabs"));
+          $("#tabs").html("");
+          
+          var names = $.map(open_tabs, function (tab) { return tab.title });
+          var filtered_and_sorted_list = $.map(names, function (item) {
+            var score = item.toLowerCase().score(query.toLowerCase());
+            if (score > 0) return {
+              'name': item,
+              'value': score
+            }
+          }).sort(function(a, b) {
+            return b.value - a.value
+          });
+
+          $.map(filtered_and_sorted_list, function(item) {
+            $.each(open_tabs, function(id, tab) {
+              if ( tab.incognito === false && tab.status == "complete" && item.name == tab.title) {
+              var open_temp = $("<div></div>").addClass("tab-item");
+              $("<img></img>").appendTo(open_temp).addClass("tab-icon")
+                .attr({
+                "src": tab.favIconUrl,
+                "height": 16,
+                "width": 16
+                });
+              var highlighted = tab.title;
+              highlighted = highlighted.replace(new RegExp(query, "gi"), "<b>$&</b>");
+              $("<div></div>").appendTo(open_temp).addClass("tab-link").html( highlighted ).attr("id", tab.id);
+              var pin = $("<span></span>").attr("id", tab.id).addClass("button");
+              if (tab.pinned === false) {
+                pin.appendTo(open_temp).html( "<img src='/images/pin.png' title='Pin'>" ).addClass("pin");
+              } else {
+                pin.appendTo(open_temp).html( "<img src='/images/unpin.png' title='Unpin'>" ).addClass("unpin");
+              }
+              $("<span></span>").appendTo(open_temp).html( "<img src='/images/close.png' title='Close'>" )
+                .attr("id", tab.id).addClass("close button");
+              open_temp.appendTo("#tabs");
+              }
+            });
+          });
+          restyle();
+        }
+
+        searchTabs(); //initialize tabs
+      });
     </script>
   </head>
 
   <body>
     <div id="search">
-      <input type="text" placeholder="Search open tabs" />
+      <input type="text" autocomplete="off" id="query" placeholder="Search open tabs" />
     </div>
     <div id="tabs"></div>
   </body>
