@@ -8,9 +8,27 @@
     font-size: 14px;
   }
 
-  #tabs {
+  div#search {
+    background-color: #EEE;
+    top: 0;
+    left: 0; right: 0;
+    height: 32px;
+  }
+  div#search input {
     width: 100%;
-    height: 100%;
+    height: 32px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    margin: 0;
+    font-size: 20px;
+  }
+
+  div#tabs {
+    position: absolute;
+    top: 32px;
+    left: 0; right: 0;
+    bottom: 0;
     overflow-y: scroll;
     overflow-x: hidden;
   }
@@ -18,6 +36,9 @@
   .button {
     opacity: .2;
     -webkit-transition: opacity .2s ease-in-out;
+  }
+  .unpin {
+    opacity: .4;
   }
   .button:hover {
     opacity: .7;

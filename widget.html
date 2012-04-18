@@ -1,9 +1,6 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="style.css" />
-  </head>
-
-  <body>
     <script type="text/javascript" src="jquery-1.7.2.js"></script>
     <script type="text/javascript">
       $(document).ready(function($) {
@@ -20,7 +17,6 @@
           $(".tab-link").css({
             "width" : width - 75
           });
-
         }
 
         // Handles when the widget is resized
@@ -51,13 +47,14 @@
                 "width": 16
               });
               $("<div></div>").appendTo(open_temp).addClass("tab-link").html( tab.title ).attr("id", tab.id);
-			  var pin = $("<span></span>").attr("id", tab.id).addClass("tabbutton");
-			  if (tab.pinned === false) {
-				pin.appendTo(open_temp).html( "<img src='/images/pin.png' title='Pin'>" ).addClass("pin button");
-			  } else {
-				pin.appendTo(open_temp).html( "<img src='/images/unpin.png' title='Unpin'>" ).addClass("unpin button");
-			  }
-              $("<span></span>").appendTo(open_temp).html( "<img src='/images/close.png' title='Close'>" ).attr("id", tab.id).addClass("tabbutton close button");
+              var pin = $("<span></span>").attr("id", tab.id).addClass("tabbutton");
+              if (tab.pinned === false) {
+                pin.appendTo(open_temp).html( "<img src='/images/pin.png' title='Pin'>" ).addClass("pin button");
+              } else {
+                pin.appendTo(open_temp).html( "<img src='/images/unpin.png' title='Unpin'>" ).addClass("unpin button");
+              }
+              $("<span></span>").appendTo(open_temp).html( "<img src='/images/close.png' title='Close'>" )
+                .attr("id", tab.id).addClass("tabbutton close button");
               open_temp.appendTo("#tabs");
             }
           });
@@ -80,7 +77,12 @@
 
       $('img').live('dragstart', function(event) { event.preventDefault(); });
     </script>
+  </head>
 
+  <body>
+    <div id="search">
+      <input type="text" placeholder="Search open tabs" />
+    </div>
     <div id="tabs"></div>
   </body>
 </html>
